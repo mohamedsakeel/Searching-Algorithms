@@ -1,12 +1,7 @@
 package Java;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class LinearSearch {
@@ -50,11 +45,11 @@ public class LinearSearch {
 
     public static void main(String[] args) throws IOException {
 
-        int[] data1 = readFiles("Java/Dataset1000.txt");
-        int[] data2 = readFiles("Java/Dataset10000.txt");
-        int[] data3 = readFiles("Java/Dataset100000.txt");
+        int[] data1 = readFiles("Java/Datasets/Dataset1000.txt");
+        int[] data2 = readFiles("Java/Datasets/Dataset10000.txt");
+        int[] data3 = readFiles("Java/Datasets/Dataset100000.txt");
 
-        int x = 22162;
+        int x = 214693;
         // Function call
         int result = search(data3, x);
         if (result == -1)
