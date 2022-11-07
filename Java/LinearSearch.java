@@ -16,9 +16,6 @@ public class LinearSearch {
         return -1;
     }
 
-    static long endTime = System.nanoTime();
-    static long totalTime = endTime - startTime;
-
     public static int[] readFiles(String file) {
         try {
             File f = new File(file);
@@ -61,4 +58,7 @@ public class LinearSearch {
 
         System.out.println(totalTime + " ns");
     }
+
+    static long endTime = System.nanoTime();
+    static long totalTime = endTime - startTime;
 }

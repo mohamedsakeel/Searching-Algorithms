@@ -1,36 +1,44 @@
 package Java;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class BinarySearch {
+public class JumpSearch {
     static long startTime = System.nanoTime();
 
-    int binarySearch(int arr[], int l, int r, int x) {
-        if (r >= l) {
-            int mid = l + (r - l) / 2;
+    public static int jumpSearch(int[] arr, int x) {
+        int n = arr.length;
 
-            // If the element is present at the
-            // middle itself
-            if (arr[mid] == x)
-                return mid;
+        // Finding block size to be jumped
+        int step = (int) Math.floor(Math.sqrt(n));
 
-            // If element is smaller than mid, then
-            // it can only be present in left subarray
-            if (arr[mid] > x)
-                return binarySearch(arr, l, mid - 1, x);
-
-            // Else the element can only be present
-            // in right subarray
-            return binarySearch(arr, mid + 1, r, x);
+        // Finding the block where element is
+        // present (if it is present)
+        int prev = 0;
+        while (arr[Math.min(step, n) - 1] < x) {
+            prev = step;
+            step += (int) Math.floor(Math.sqrt(n));
+            if (prev >= n)
+                return -1;
         }
 
-        // We reach here when element is not present
-        // in array
-        return -1;
+        // Doing a linear search for x in block
+        // beginning with prev.
+        while (arr[prev] < x) {
+            prev++;
 
+            // If we reached next block or end of
+            // array, element is not present.
+            if (prev == Math.min(step, n))
+                return -1;
+        }
+
+        // If element is found
+        if (arr[prev] == x)
+            return prev;
+
+        return -1;
     }
 
     public static int[] readFiles(String file) {
@@ -56,8 +64,8 @@ public class BinarySearch {
         }
     }
 
+    // Driver program to test function
     public static void main(String[] args) {
-        BinarySearch ob = new BinarySearch();
         int[] data1 = readFiles("Java/Datasets/Dataset1000.txt");
         int[] data2 = readFiles("Java/Datasets/Dataset10000.txt");
         int[] data3 = readFiles("Java/Datasets/Dataset100000.txt");
@@ -67,14 +75,13 @@ public class BinarySearch {
         Arrays.sort(data3);
 
         int x = 712639;
-        int n = data3.length;
-        int result = ob.binarySearch(data3, 0, n - 1, x);
-        if (result == -1)
-            System.out.println("Element not present");
-        else
-            System.out.println("Element found at index "
-                    + result);
 
+        // Find the index of 'x' using Jump Search
+        int index = jumpSearch(data3, x);
+
+        // Print the index where 'x' is located
+        System.out.println("\nNumber " + x +
+                " is at index " + index);
         System.out.println(totalTime + " ns");
     }
 
