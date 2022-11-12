@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class InterpolationSearch {
-    static long startTime = System.nanoTime();
 
     public static int interpolationSearch(int arr[], int lo,
             int hi, int x) {
@@ -42,20 +41,22 @@ public class InterpolationSearch {
     public static int[] readFiles(String file) {
         try {
             File f = new File(file);
-            Scanner s = new Scanner(f);
-            int ctr = 0;
-            while (s.hasNextInt()) {
-                ctr++;
-                s.nextInt();
-            }
-            int[] arr = new int[ctr];
+            try (Scanner s = new Scanner(f)) {
+                int ctr = 0;
+                while (s.hasNextInt()) {
+                    ctr++;
+                    s.nextInt();
+                }
+                int[] arr = new int[ctr];
 
-            Scanner s1 = new Scanner(f);
+                try (Scanner s1 = new Scanner(f)) {
+                    for (int i = 0; i < arr.length; i++) {
+                        arr[i] = s1.nextInt();
+                    }
+                }
 
-            for (int i = 0; i < arr.length; i++) {
-                arr[i] = s1.nextInt();
+                return arr;
             }
-            return arr;
 
         } catch (Exception e) {
             return null;
@@ -64,7 +65,8 @@ public class InterpolationSearch {
 
     // Driver Code
     public static void main(String[] args) {
-
+        long startTime = System.nanoTime();
+        long beforeUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         // Array of items on which search will
         // be conducted.
         int[] data1 = readFiles("Java/Datasets/Dataset1000.txt");
@@ -87,9 +89,16 @@ public class InterpolationSearch {
                     + index);
         else
             System.out.println("Element not found.");
-        System.out.println(totalTime + " ns");
+
+        long endTime = System.nanoTime();
+        long afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        long totalTime = endTime - startTime;
+
+        long actualMemUsed = afterUsedMem - beforeUsedMem;
+
+        System.out.println("Execution Time: " + totalTime / 1000000 + " ms");
+        System.out.println("Memory Used: " + actualMemUsed + " bytes");
+        System.out.println("Memory Used: " + actualMemUsed / 1000000 + " MB");
     }
 
-    static long endTime = System.nanoTime();
-    static long totalTime = endTime - startTime;
 }
